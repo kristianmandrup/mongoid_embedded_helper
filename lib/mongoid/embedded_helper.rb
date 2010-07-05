@@ -46,39 +46,52 @@ module Mongoid::Extensions::Array
     def adjust!(attrs = {})
       attrs.each_pair do |key, value|
         self.each do |doc|
-          doc.adjust_attribs!(attrs)
+          doc.adjust!(attrs)
         end
       end
       self
     end  
   end
 end
+
+module Mongoid
+  class Criteria
+    def adjust!(attrs = {})
+      to_a.adjust!(attrs)
+    end  
+  end
+end
      
 module Mongoid::Document        
-  def adjust_attribs!(attrs = {}) 
+  def present? key
+    respond_to? key    
+  end
+  
+  def adjust!(attrs = {}) 
     run_callbacks(:before_update)              
     (attrs || {}).each_pair do |key, value|
-      next if !value.integer?
-
+      next if !value.integer? # only add integer values     
+      next if !present? key # only add to properties already present!
+      
       if set_allowed?(key)
-        current_val = @attributes[key.to_s]         
+        current_val = @attributes[key.to_s] || 0
 
         if current_val.integer?
           @attributes[key.to_s] = current_val + value 
         end
 
       elsif write_allowed?(key)
-        current_val = send("#{key}")         
+        current_val = send("#{key}") || 0
 
         if current_val.integer?    
           send("#{key}=", current_val + value) 
         end
       end 
-      identify if id.blank?
-      notify
-      run_callbacks(:after_update)
-      self
     end
+    identify if id.blank?
+    notify
+    run_callbacks(:after_update)
+    self
   end
 end
 
