@@ -1,0 +1,13 @@
+.DS_STORE
+
+# yard generated
+doc
+.yardoc
+
+# jeweler generated
+pkg
+vendor
+.bundle
+
+
+
