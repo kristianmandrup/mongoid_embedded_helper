@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongoid_embedded_helper}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "autotest/discover.rb",
      "lib/mongoid/embedded_helper.rb",
      "lib/mongoid_embedded_helper.rb",
+     "mongoid_embedded_helper.gemspec",
      "spec/mongoid/embedded_helper_spec.rb",
      "spec/rspec.options",
      "spec/spec_helper.rb"
