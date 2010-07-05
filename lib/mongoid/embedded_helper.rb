@@ -1,7 +1,7 @@
 require 'mongoid'
 
 module Mongoid
-  module EmbeddedHelper                  
+  module EmbeddedHelper                      
     def in_collection stack = []
       stack.extend(ArrayExt) if stack.empty?
       if embedded?        
@@ -33,4 +33,55 @@ module Mongoid
       end      
     end    
   end
+end
+
+class NilClass
+  def integer?
+    false
+  end
+end
+
+module Mongoid::Extensions::Array
+  module Mutators
+    def adjust!(attrs = {})
+      attrs.each_pair do |key, value|
+        self.each do |doc|
+          doc.adjust_attribs!(attrs)
+        end
+      end
+      self
+    end  
+  end
+end
+     
+module Mongoid::Document        
+  def adjust_attribs!(attrs = {}) 
+    run_callbacks(:before_update)              
+    (attrs || {}).each_pair do |key, value|
+      next if !value.integer?
+
+      if set_allowed?(key)
+        current_val = @attributes[key.to_s]         
+
+        if current_val.integer?
+          @attributes[key.to_s] = current_val + value 
+        end
+
+      elsif write_allowed?(key)
+        current_val = send("#{key}")         
+
+        if current_val.integer?    
+          send("#{key}=", current_val + value) 
+        end
+      end 
+      identify if id.blank?
+      notify
+      run_callbacks(:after_update)
+      self
+    end
+  end
+end
+
+class Array
+  include Mongoid::Extensions::Array::Mutators
 end

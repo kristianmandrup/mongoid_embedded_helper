@@ -67,6 +67,11 @@ describe 'Mongoid Embedded Helper' do
       result = @person.lists[0].items[0].in_collection.where(:number.gt => 1).to_a  
       result.size.should == 2
     end
+
+    it "should add 1 to all positions greater than 1" do
+      result = @person.lists[0].items.where(:pos.gt => 1).to_a.adjust!(:pos => 1)
+      result.map(&:pos).should == [3, 4]
+    end
   end  
 end
 
