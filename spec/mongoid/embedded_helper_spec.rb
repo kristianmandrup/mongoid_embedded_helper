@@ -78,7 +78,7 @@ describe 'Mongoid Embedded Helper' do
     end
   end
   
-  describe '#adjust!' do                            
+  describe '#adjust! numeric' do                            
     context 'on an array' do
       it "should add 1 to all positions greater than 1" do
         result = @person.lists[0].items.where(:pos.gt => 1).to_a.adjust!(:pos => 1)
@@ -105,7 +105,32 @@ describe 'Mongoid Embedded Helper' do
         result = @person.adjust!(:pos => 1)
         lambda {result.pos}.should raise_error
       end
+    end  
+  end
+
+  describe '#adjust! by proc' do                            
+
+    context 'on an array' do
+      it "should times all positions (greater than 1) by 2" do
+        result = @person.lists[0].items.where(:pos.gt => 1).to_a.adjust!(:pos => lambda {|e| e * 2})
+        result.map(&:pos).should == [4, 6]
+      end
     end
+
+    context 'on a criteria' do
+      it "should times all positions (greater than 1) by 2" do
+        result = @person.lists[0].items.where(:pos.gt => 1).adjust!(:pos => lambda {|e| e * 2})
+        result.map(&:pos).should == [4, 6]
+      end
+    end
+
+    context 'on a document with a name field' do           
+      it "should upcase the name" do      
+        result = @person.adjust!(:name => lambda {|e| e.upcase })
+        result.name.should == 'Kristian'.upcase
+      end
+    end
+    
   end  
 end
 

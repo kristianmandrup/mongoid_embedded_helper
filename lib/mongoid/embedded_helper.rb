@@ -70,29 +70,45 @@ module Mongoid::Document
   def adjust!(attrs = {}) 
     run_callbacks(:before_update)              
     (attrs || {}).each_pair do |key, value|
-      next if !value.integer? # only add integer values     
       next if !present? key # only add to properties already present!
-      
-      if set_allowed?(key)
-        current_val = @attributes[key.to_s] || 0
-
-        if current_val.integer?
-          @attributes[key.to_s] = current_val + value 
-        end
-
-      elsif write_allowed?(key)
-        current_val = send("#{key}") || 0
-
-        if current_val.integer?    
-          send("#{key}=", current_val + value) 
-        end
-      end 
+      adjust_by_proc!(key, value) if value.kind_of?(Proc)
+      adjust_by_number!(key, value) if value.kind_of?(Numeric) # only add integer values     
     end
     identify if id.blank?
     notify
     run_callbacks(:after_update)
     self
+  end  
+
+  private 
+
+  def adjust_by_proc! key, proc
+    if set_allowed?(key)
+      current_val = @attributes[key.to_s]
+      @attributes[key.to_s] = proc.call(current_val)
+    elsif write_allowed?(key)
+      current_val = send("#{key}")
+      send("#{key}=", proc.call(current_val))
+    end     
   end
+  
+  def adjust_by_number! key, value
+    if set_allowed?(key)
+      current_val = @attributes[key.to_s] || 0
+
+      if current_val.kind_of? Numeric
+        @attributes[key.to_s] = current_val + value 
+      end
+
+    elsif write_allowed?(key)
+      current_val = send("#{key}") || 0
+
+      if current_val.kind_of? Numeric
+        send("#{key}=", current_val + value) 
+      end
+    end 
+  end
+    
 end
 
 class Array
