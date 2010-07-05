@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "mongoid_embedded_helper"
-    gem.summary = %Q{Helps with queries from embedded documents in Mongoid}
-    gem.description = %Q{Module to asist in performing queries from within embedded documents in Mongoid}
+    gem.summary = %Q{Facilitates performing queries on collections in embedded Mongoid documents}
+    gem.description = %Q{Facilitates performing queries on collections in embedded Mongoid documents by performing query from the root node}
     gem.email = "kmandrup@gmail.com"
     gem.homepage = "http://github.com/kristianmandrup/mongoid_embedded_helper"
     gem.authors = ["Kristian Mandrup"]
