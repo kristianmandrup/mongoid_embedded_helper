@@ -108,8 +108,7 @@ describe 'Mongoid Embedded Helper' do
     end  
   end
 
-  describe '#adjust! by proc' do                            
-
+  describe '#adjust! by proc' do
     context 'on an array' do
       it "should times all positions (greater than 1) by 2" do
         result = @person.lists[0].items.where(:pos.gt => 1).to_a.adjust!(:pos => lambda {|e| e * 2})
@@ -129,8 +128,23 @@ describe 'Mongoid Embedded Helper' do
         result = @person.adjust!(:name => lambda {|e| e.upcase })
         result.name.should == 'Kristian'.upcase
       end
-    end
-    
-  end  
+    end            
+  end          
+  
+  describe '#adjust! by symbol and string' do
+    context 'on a document with a name field' do           
+      it "should upcase the name - using string arg" do      
+        result = @person.adjust!(:name => 'upcase')
+        result.name.should == 'Kristian'.upcase
+      end
+    end            
+
+    context 'on a document with a name field' do           
+      it "should upcase the name - using symbol arg" do      
+        result = @person.adjust!(:name => :upcase)
+        result.name.should == 'Kristian'.upcase
+      end
+    end            
+  end
 end
 

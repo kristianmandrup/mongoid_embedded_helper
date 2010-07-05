@@ -72,6 +72,7 @@ module Mongoid::Document
     (attrs || {}).each_pair do |key, value|
       next if !present? key # only add to properties already present!
       adjust_by_proc!(key, value) if value.kind_of?(Proc)
+      adjust_by_symbol!(key, value) if value.kind_of?(Symbol) || value.kind_of?(String)
       adjust_by_number!(key, value) if value.kind_of?(Numeric) # only add integer values     
     end
     identify if id.blank?
@@ -91,6 +92,18 @@ module Mongoid::Document
       send("#{key}=", proc.call(current_val))
     end     
   end
+
+  def adjust_by_symbol! key, name
+    method = name.to_sym
+    if set_allowed?(key)
+      current_val = @attributes[key.to_s]
+      @attributes[key.to_s] = current_val.send(method)
+    elsif write_allowed?(key)
+      current_val = send("#{key}")
+      send("#{key}=", current_val.send(method))
+    end     
+  end
+
   
   def adjust_by_number! key, value
     if set_allowed?(key)
