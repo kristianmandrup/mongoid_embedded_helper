@@ -65,7 +65,7 @@ describe 'Mongoid Embedded Helper' do
     end
   end  
      
-  describe '#top level query' do
+  describe '#in_collection' do
   
     it "should handle query from top level node" do
       result = @person.in_collection.where(:name => 'Kristian').to_a.first  

@@ -1,7 +1,27 @@
 require 'mongoid'
 
 module Mongoid
-  module EmbeddedHelper                      
+  module EmbeddedHelper
+		def self.included(model)
+			model.class_eval do
+			  
+        alias_method :old_assimilate, :assimilate        
+        def assimilate(parent, options)
+          old_assimilate parent, options  
+          send(:after_assimilate) if respond_to?(:after_assimilate)
+          # run_callbacks(:after_assimilate)
+        end
+        
+        alias_method :old_parentize, :parentize
+        def parentize(object, association_name)
+          old_parentize object, association_name
+          send(:after_parentize) if respond_to?(:after_parentize)
+          # run_callbacks(:after_parentize)    
+        end  
+        
+      end
+    end
+       
     def in_collection stack = []
       stack.extend(ArrayExt) if stack.empty?
       if embedded? 
@@ -66,7 +86,8 @@ module Mongoid
   end
 end
      
-module Mongoid::Document        
+module Mongoid::Document 
+         
   def present? key
     respond_to? key    
   end
