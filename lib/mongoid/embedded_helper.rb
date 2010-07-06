@@ -4,9 +4,13 @@ module Mongoid
   module EmbeddedHelper                      
     def in_collection stack = []
       stack.extend(ArrayExt) if stack.empty?
-      if embedded?        
+      if embedded? 
         stack.add_collection_name self
-        _parent.in_collection(stack)
+        if _parent.respond_to?(:in_collection)
+          _parent.in_collection(stack)
+        else
+          iterate_collection_stack stack, _parent
+        end
       else  
         return self.class if stack.empty?      
         iterate_collection_stack stack
@@ -15,8 +19,8 @@ module Mongoid
     
     private 
          
-    def iterate_collection_stack stack
-      collection = self
+    def iterate_collection_stack stack, subject = nil
+      collection = subject || self
       stack = stack.reverse
       stack.each do |entry|
         sub_collection = collection.send entry[:collection_name]    
