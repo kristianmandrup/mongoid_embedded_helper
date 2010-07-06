@@ -6,7 +6,12 @@ class Person
   include Mongoid::Document
   include Mongoid::EmbeddedHelper
   field :name, :type => String
-  embeds_many :lists   
+  embeds_many :lists 
+  
+  # after_update :do_it    
+  # def do_it
+  #   puts "hello"
+  # end
 end  
 
 class PosPerson

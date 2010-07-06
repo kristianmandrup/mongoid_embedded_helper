@@ -67,17 +67,13 @@ module Mongoid::Document
     respond_to? key    
   end
   
-  def adjust!(attrs = {}) 
-    run_callbacks(:before_update)              
+  def adjust!(attrs = {})         
     (attrs || {}).each_pair do |key, value|
       next if !present? key # only add to properties already present!
       adjust_by_proc!(key, value) if value.kind_of?(Proc)
       adjust_by_symbol!(key, value) if value.kind_of?(Symbol) || value.kind_of?(String)
       adjust_by_number!(key, value) if value.kind_of?(Numeric) # only add integer values     
     end
-    identify if id.blank?
-    notify
-    run_callbacks(:after_update)
     self
   end  
 
