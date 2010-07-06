@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongoid_embedded_helper}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = %q{2010-07-05}
+  s.date = %q{2010-07-06}
   s.description = %q{Facilitates performing queries on collections in embedded Mongoid documents by performing query from the root node}
   s.email = %q{kmandrup@gmail.com}
   s.extra_rdoc_files = [
