@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongoid_embedded_helper}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "lib/mongoid_embedded_helper.rb",
      "mongoid_embedded_helper.gemspec",
      "spec/mongoid/embedded_helper_spec.rb",
+     "spec/mongoid/more_embedded_helper_spec.rb",
      "spec/rspec.options",
      "spec/spec_helper.rb"
   ]
@@ -37,6 +38,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Facilitates performing queries on collections in embedded Mongoid documents}
   s.test_files = [
     "spec/mongoid/embedded_helper_spec.rb",
+     "spec/mongoid/more_embedded_helper_spec.rb",
      "spec/spec_helper.rb"
   ]
 
