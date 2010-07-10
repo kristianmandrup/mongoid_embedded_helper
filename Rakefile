@@ -12,8 +12,9 @@ begin
     gem.authors = ["Kristian Mandrup"]
     gem.add_dependency("mongoid", "<= 2.0.0")
     gem.add_dependency("bson", ">= 1.0.3")
+    gem.add_dependency("mongoid_adjust", ">= 0.1.0")
 
-    gem.add_development_dependency "rspec", ">=2.0.0.beta.12"
+    gem.add_development_dependency "rspec", ">=2.0.0"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
