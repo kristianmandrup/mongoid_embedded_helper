@@ -10,12 +10,11 @@ begin
     gem.email = "kmandrup@gmail.com"
     gem.homepage = "http://github.com/kristianmandrup/mongoid_embedded_helper"
     gem.authors = ["Kristian Mandrup"]
-    gem.add_dependency("mongoid", ">= 2.0.0.beta.7")
-    gem.add_dependency("mongoid_adjust", ">= 0.1.0")
-    gem.add_dependency("bson", ">= 1.0.3")
-    gem.add_dependency("mongoid_adjust", ">= 0.1.0")
+    gem.add_dependency "mongoid",         ">= 2.0.0.beta.14"
+    gem.add_dependency "mongoid_adjust",  ">= 0.1.1"
+    gem.add_dependency "bson_ext",        ">= 1.0.3"
 
-    gem.add_development_dependency "rspec", ">=2.0.0"
+    gem.add_development_dependency "rspec", ">=2.0.0.beta.15"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
