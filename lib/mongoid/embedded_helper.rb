@@ -4,14 +4,7 @@ module Mongoid
   module EmbeddedHelper
 		def self.included(model)
 			model.class_eval do
-			  
-        alias_method :old_assimilate, :assimilate        
-        def assimilate(parent, options)
-          old_assimilate parent, options  
-          send(:after_assimilate) if respond_to?(:after_assimilate)
-          # run_callbacks(:after_assimilate)
-        end
-        
+			          
         alias_method :old_parentize, :parentize
         def parentize(object, association_name)
           old_parentize object, association_name

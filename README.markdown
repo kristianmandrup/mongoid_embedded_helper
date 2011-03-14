@@ -3,6 +3,10 @@
 The Mongoid EmbeddedHelper helps overcome the limitation that you can't perform direct queries on an embedded collection without accessing it from the root.
 It simply introduces a generic function that performs the "local" query by accessing it from the nearest root ;)
 
+## Update
+
+In the latest release (0.3.0) the #assimilate method has been removed in order to work with Mongoid 2.0.0.rc1
+
 ## Installation ##  
 
 <code>gem install mongoid_embedded_helper</code>
