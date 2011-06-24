@@ -3,15 +3,13 @@ require 'mongoid'
 module Mongoid
   module EmbeddedHelper
 		def self.included(model)
-			model.class_eval do
-			          
+			model.class_eval do			          
         alias_method :old_parentize, :parentize
         def parentize(document)
           old_parentize document
           send(:after_parentize) if respond_to?(:after_parentize)
           # run_callbacks(:after_parentize)    
-        end  
-        
+        end          
       end
     end
        
